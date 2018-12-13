@@ -1,0 +1,72 @@
+{% extends 'layout.html.twig' %}
+{% block title %}Profile{% endblock %}
+
+    {% block content %}
+        <div class="row" >
+            <div class="col-lg-5 col-md-12" id="headerHomepageLeft">
+                <br>
+                <img src="/assets/images/wcs.png" class="rounded mx-auto d-block" alt="..." width="300">
+            </div>
+            <div class="col-lg-7 col-md-12" id="headerHomepageRight">
+                <div class="row">
+                    <div class="col-4 mt-1">
+                        <img class="rounded-circle" src="{{ user.avatar }}" alt="image" width="150" height="150">
+                    </div>
+                    <div class="col-4 col-xs-12" >
+                        <p class="welcome"><small>Profil de </small><strong>{{ user.firstName|capitalize }}</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section>
+            <div class="container">
+                <table class="table table-striped">
+                    <tr>
+                        <th scope="row">Prénom</th>
+                        <td>{{ user.firstName|raw|capitalize }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Nom</th>
+                        <td>{{ user.lastName|raw|upper }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Email</th>
+                        <td>{{ user.email }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Date de naissance</th>
+                        <td>{{ user.birthDate }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Promo</th>
+                        <td>{{ user.promo }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Langages</th>
+                        <td>{{ user.languages }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Profil github</th>
+                        <td>{{ user.gitHub }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Profil LinkedIn</th>
+                        <td>{{ user.linkedin }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Odyssey</th>
+                        <td>{{ user.odyssey }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Administrateur</th>
+                        <td>{% if user.isAdmin ==1 %}Oui{% else %}Non{% endif %}</td>
+                    </tr>
+                </table>
+                {% if session.user.isAdmin == 1 %}
+                <a href="/staff/user/modify{{ user.id }}" class="btn modifyUser text-white">Modifier</a>
+                <a href="/staff/user/delete{{ user.id }}" class="btn deleteUser">Supprimer</a>
+                {% endif %}
+            </div>
+        </section>
+    {% endblock %}

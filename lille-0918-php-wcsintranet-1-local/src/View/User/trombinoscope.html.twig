@@ -1,0 +1,115 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Trombinoscope{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="enteteTrombi title text-white">
+                <h1>TROMBINOSCOPE</h1>
+                <h2 class="font-weight-bold pt-2">Retrouve tes Wilders préférés !</h2>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col">
+                <form method="post">
+                    <div class="input-group">
+                        <select class="custom-select" name="selectLanguage" id="selectLanguage">
+                            <option> Choisir le langage</option>
+                            {% for language in languages %}
+                                <option class="display" value="{{ language.id }}" {% if languageSelected == language.id %} selected
+                                        {% endif %}>{{ language.nameLanguage }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <select class="custom-select" name="selectPromo" id="selectPromo">
+                            <option> Choisir la promo</option>
+                            {% for promo in promos %}
+                                <option class="display" value="{{ promo.id }}" {% if promoSelected == promo.id %} selected
+                                        {% endif %}>{{ promo.name|date("m/Y") }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <div class="input-group-append">
+                            <input type="submit" class="btn btn-outline-secondary" value="Sélectionner">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row justify-content-around">
+            {% for user in users %}
+                {% if languageSelected == "Choisir le langage" and promoSelected == "Choisir la promo"%}
+                    <div class="card text-center shadow p-3 m-5 bg-white rounded" style="max-width: 12rem;">
+                        <img class="card-img-top shadow rounded-circle" id="cardTrombi" src="{{ user.avatar }}" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ user.firstName|capitalize|raw }}</h5>
+                            <h5 class="card-title">{{ user.lastname|upper|raw }}</h5>
+                            <p class="card-text">{{ user.nameLanguage }}</p>
+                            <p class="card-text">{{ user.name|date("m/Y") }}</p>
+                        </div>
+                        <div>
+                            <a href="/showProfile/{{ user.0 }}" class="btn orange text-white">Voir le profil</a>
+                        </div>
+                    </div>
+                {% elseif languageSelected == user.idLanguage  and promoSelected == "Choisir la promo" %}
+                    <div class="card text-center shadow p-3 m-5 bg-white rounded" style="max-width: 12rem;">
+                        <img class="card-img-top shadow rounded-circle" id="cardTrombi" src="{{ user.avatar }}" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ user.firstName|capitalize|raw }}</h5>
+                            <h5 class="card-title">{{ user.lastname|upper|raw }}</h5>
+                            <p class="card-text">{{ user.nameLanguage }}</p>
+                            <p class="card-text">{{ user.name|date("m/Y") }}</p>
+                        </div>
+                        <div>
+                            <a href="/showProfile/{{ user.0 }}" class="btn orange text-white">Voir le profil</a>
+                        </div>
+                    </div>
+                {% elseif languageSelected is not defined  and promoSelected is not defined %}
+                    <div class="card text-center shadow p-3 m-5 bg-white rounded" style="max-width: 12rem;">
+                        <img class="card-img-top shadow rounded-circle" id="cardTrombi" src="{{ user.avatar }}" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ user.firstName|capitalize|raw }}</h5>
+                            <h5 class="card-title">{{ user.lastname|upper|raw }}</h5>
+                            <p class="card-text">{{ user.nameLanguage }}</p>
+                            <p class="card-text">{{ user.name|date("m/Y") }}</p>
+                        </div>
+                        <div>
+                            <a href="/showProfile/{{ user.0 }}" class="btn orange text-white">Voir le profil</a>
+                        </div>
+                    </div>
+                {% elseif languageSelected == "Choisir le langage" and promoSelected == user.idPromo %}
+                    <div class="card text-center shadow p-3 m-5 bg-white rounded" style="max-width: 12rem;">
+                        <img class="card-img-top shadow rounded-circle" id="cardTrombi" src="{{ user.avatar }}" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ user.firstName|capitalize|raw }}</h5>
+                            <h5 class="card-title">{{ user.lastname|upper|raw }}</h5>
+                            <p class="card-text">{{ user.nameLanguage }}</p>
+                            <p class="card-text">{{ user.name|date("m/Y") }}</p>
+                        </div>
+                        <div>
+                            <a href="/showProfile/{{ user.0 }}" class="btn orange text-white">Voir le profil</a>
+                        </div>
+                    </div>
+                {% elseif languageSelected == user.idLanguage and promoSelected == user.idPromo %}
+                    <div class="card text-center shadow p-3 m-5 bg-white rounded" style="max-width: 12rem;">
+                        <img class="card-img-top shadow rounded-circle" id="cardTrombi" src="{{ user.avatar }}" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ user.firstName|capitalize|raw }}</h5>
+                            <h5 class="card-title">{{ user.lastname|upper|raw }}</h5>
+                            <p class="card-text">{{ user.nameLanguage }}</p>
+                            <p class="card-text">{{ user.name|date("m/Y") }}</p>
+                        </div>
+                        <div>
+                            <a href="/showProfile/{{ user.0 }}" class="btn orange text-white">Voir le profil</a>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

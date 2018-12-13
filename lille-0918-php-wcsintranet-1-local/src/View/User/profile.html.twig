@@ -1,0 +1,69 @@
+{% extends 'layout.html.twig' %}
+{% block title %}Profile{% endblock %}
+
+    {% block content %}
+        <div class="container-fluid">
+            {% include '_header.html.twig' %}
+        </div>
+        <div class="container">
+            <div class="container mt-5">
+             <div class="card-header text-center text-white" id="news">
+             <h2>Votre profil</h2>
+             </div>
+
+                <table class="table table-striped">
+                    <tr>
+                        <th scope="row">Prénom</th>
+                        <td>{{ session.user.firstName|raw|capitalize }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Nom</th>
+                        <td>{{ session.user.lastName|raw|upper }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Email</th>
+                        <td>{{ session.user.email }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Date de naissance</th>
+                        <td>{{ session.user.birthDate|date("d/m/Y") }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Téléphone</th>
+                        <td>{{ session.user.phoneNumber }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Promo</th>
+                        <td>{{ session.user.promo }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Langages</th>
+                        <td>{{ session.user.languages }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Profil github</th>
+                        <td>{{ session.user.gitHub }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Profil LinkedIn</th>
+                        <td>{{ session.user.linkedin }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Odyssey</th>
+                        <td>{{ session.user.odyssey }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Administrateur</th>
+                        <td>{% if session.user.isAdmin ==1 %}Oui{% else %}Non{% endif %}</td>
+                    </tr>
+                </table>
+                <div>
+                    <a class="btn orange text-white" href="/edit">Editer votre profil</a>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="http://widget.meteocity.com/js/NTkzNTB8MXw0fDF8NXwyMWIyYTN8MXxGRkZGRkZ8Y3wx"></script>
+{% endblock %}

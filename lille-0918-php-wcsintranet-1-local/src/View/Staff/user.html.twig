@@ -1,0 +1,341 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Administration des utilisateurs{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="headerUsers titleUsers text-white">
+                <h1>Utilisateurs</h1>
+                <h2 class="pt-2">Retrouve ici tous les utilisateurs de l'Intrawild</h2>
+                <button class="btn orange mt-4" id="addUser">Créer des utilisateurs</button>
+                <button class="btn orange mt-4" id="displayPromosManagement">Gérer les promotions</button>
+                <button class="btn orange mt-4" id="displayLanguagesManagement">Gérer les languages</button>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid mt-5" id="managePromos">
+        <div class="row">
+            <div class="col-lg-4">
+                <form method="POST">
+                    <div class="form-group">
+                        <label for="addPromo">Ajouter une promotion</label>
+                        <input type="month" name="addPromo" id="addPromo" class="form-control">
+                        <input type="submit" class="btn mt-3" value="Ajouter">
+                    </div>
+                </form>
+                <form method="POST">
+                    <div class="form-group mt-5">
+                        <label for="deletePromo">Supprimer une promotion</label>
+                        <select class="custom-select mr-sm-2" name="deletePromo" id="deletePromo">
+                            {% for promo in promos %}
+                                <option value="{{ promo.id }}">{{ promo.name|date("m/Y") }}</option>
+                            {% endfor %}
+                        </select>
+                        <input type="submit" class="btn mt-3" value="Supprimer">
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <form method="POST">
+                        <label for="addUsersToPromo">Ajouter des utilisateurs à une promotion</label>
+                        <select class="custom-select mr-sm-2 mb-3" name="promoId" id="addUsersToPromo">
+                            {% for promo in promos %}
+                                <option value="{{ promo.id }}">{{ promo.name|date("m/Y") }}</option>
+                            {% endfor %}
+                        </select>
+                        {% for user in users if user.name is empty %}
+                            <div class="form-check ml-4">
+                                <input class="form-check-input" type="checkbox" name="addUserToPromo[{{ user.0 }}]" value="{{ user.0 }}" id="{{ user.0 }}">
+                                <label class="form-check-label" for="{{ user.0 }}">
+                                    {{ user.firstName|capitalize }} {{ user.lastName|upper }}
+                                </label>
+                            </div>
+                        {% endfor %}
+                        <input type="submit" class="btn mt-3" value="Ajouter">
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label for="deleteUsersInPromo">Retirer des utilisateurs d'une promotion</label>
+                    <form method="post">
+                        <div class="input-group">
+                            <select class="custom-select" name="deleteUserInPromo" id="deleteUserInPromo">
+                                <option> Choisir la promotion</option>
+                                {% for promo in promos %}
+                                    <option class="display" value="{{ promo.id }}" {% if promoSelected == promo.id %} selected
+                                        data-promoSelected="{{ promoSelected }}" {% endif %}>{{ promo.name|date("m/Y") }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <div class="input-group-append">
+                                <input type="submit" class="btn btn-outline-secondary" value="Sélectionner">
+                            </div>
+                        </div>
+                    </form>
+                    <form method="post">
+                        {% for user in users %}
+                            {% if user.idPromo is not null and user.idPromo == promoSelected %}
+                                <div class="form-check ml-4 usersInPromo">
+                                    <input class="form-check-input" type="checkbox" name="deleteUserFromPromo[{{ user.0 }}]" value="{{ user.0 }}" id="{{ user.0 }}">
+                                    <label class="form-check-label" for="{{ user.0 }}">
+                                        {{ user.firstName|capitalize }} {{ user.lastName|upper }}
+                                    </label>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        {% if promoSelected is not null %}
+                            <input type="submit" class="btn mt-3" value="Retirer">
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid mt-5" id="manageLanguages">
+        <div class="row">
+            <div class="col-lg-4">
+                <form method="POST">
+                    <div class="form-group">
+                        <label for="addLanguage">Ajouter un langage</label>
+                        <input type="text" name="addLanguage" id="addLanguage" class="form-control">
+                        <input type="submit" class="btn mt-3" value="Ajouter">
+                    </div>
+                </form>
+                <form method="POST">
+                    <div class="form-group mt-5">
+                        <label for="deletePromo">Supprimer un langage</label>
+                        <select class="custom-select mr-sm-2" name="deleteLanguage" id="deleteLanguage">
+                            {% for language in languages %}
+                                <option value="{{ language.id }}">{{ language.nameLanguage }}</option>
+                            {% endfor %}
+                        </select>
+                        <input type="submit" class="btn mt-3" value="Supprimer">
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <form method="POST">
+                        <label for="addUsersToLanguage">Ajouter des utilisateurs à un langage</label>
+                        <select class="custom-select mr-sm-2 mb-3" name="languageId" id="addUsersToLanguage">
+                            {% for language in languages %}
+                                <option value="{{ language.id }}">{{ language.nameLanguage }}</option>
+                            {% endfor %}
+                        </select>
+                        {% for user in users if user.idLanguage is empty %}
+                            <div class="form-check ml-4">
+                                <input class="form-check-input" type="checkbox" name="addUserToLanguage[{{ user.0 }}]" value="{{ user.0 }}" id="{{ user.0 }}">
+                                <label class="form-check-label" for="{{ user.0 }}">
+                                    {{ user.firstName|capitalize }} {{ user.lastName|upper }}
+                                </label>
+                            </div>
+                        {% endfor %}
+                        <input type="submit" class="btn mt-3" value="Ajouter">
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label for="deleteUserInLanguage">Retirer des utilisateurs d'un langage</label>
+                    <form method="post">
+                        <div class="input-group">
+                            <select class="custom-select" name="deleteUserInLanguage" id="deleteUserInLanguage">
+                                <option> Choisir le langage</option>
+                                {% for language in languages %}
+                                    <option class="display" value="{{ language.id }}" {% if languageSelected == language.id %} selected
+                                        {% endif %}>{{ language.nameLanguage }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <div class="input-group-append">
+                                <input type="submit" class="btn btn-outline-secondary" value="Sélectionner">
+                            </div>
+                        </div>
+                    </form>
+                    <form method="post">
+                        {% for user in users %}
+                            {% if user.idLanguage is not null and user.idLanguage == languageSelected %}
+                                <div class="form-check ml-4 usersInLanguage">
+                                    <input class="form-check-input" type="checkbox" name="deleteUserFromLanguage[{{ user.0 }}]"
+                                           value="{{ user.0 }}" id="{{ user.0 }}">
+                                    <label class="form-check-label" for="{{ user.nameLanguage }}">
+                                        {{ user.firstName|capitalize }} {{ user.lastName|upper }}
+                                    </label>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        {% if languageSelected is not null %}
+                            <input type="submit" class="btn mt-3" value="Retirer">
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col" id="addUsers">
+                <div class="form-inline m-3">
+                    <label for="addRows">Je veux ajouter</label>
+                    <select class="custom-select mr-2 ml-2" id="addRows">
+                        <option value="1">1</option>
+                        {% for i in 2..50 %}
+                            <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="addRows">utilisateurs.</label>
+                </div>
+                <form method="POST" name="addRow" id="addRow">
+                    <div id="1" class="userRow form-inline">
+                        <label class="sr-only" for="firstname">Prénom</label>
+                        <input type="text" placeholder="Prénom" class="form-control col-md-3 m-2" name="1[firstname]" id="firstname">
+                        <label class="sr-only" for="lastname">User's lastname</label>
+                        <input type="text" placeholder="Nom" class="form-control col-md-3 m-2" name="1[lastname]" id="lastname">
+                        <label class="sr-only" for="email">User's email</label>
+                        <input type="email" placeholder="@mail" class="form-control col-md-3 m-2" name="1[email]" id="email">
+                        <div class="form-check m-2 col-md-1">
+                            <input type="checkbox" class="form-control mr-2" id="isAdmin" name="1[isAdmin]" value="1">
+                            <label class="form-check-label" for="isAdmin">Administrateur</label>
+                        </div>
+                        <br>
+                    </div>
+                    <input type="submit" class="btn orange mt-4" value="Ajouter">
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <table class="table" id="adminTable">
+                    <thead class="thead">
+                    <tr>
+                        <th scope="col">Prénom</th>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Administrateur</th>
+                        <th scope="col">Promo</th>
+                        <th scope="col">Langage</th>
+                        <th scope="col">Date de naissance</th>
+                        <th scope="col">Téléphone</th>
+                        <th scope="col">GitHub</th>
+                        <th scope="col">Linkedin</th>
+                        <th scope="col">Odyssey</th>
+                        <th scope="col">Photo?</th>
+                        <th scope="col">Voir</th>
+                        <th scope="col">Modifier</th>
+                        <th scope="col">Supprimer</th>
+                    </tr>
+                    </thead>
+                    {% for user in users %}
+                        <tr>
+                            <td>{{ user.firstName|raw|capitalize }}</td>
+                            <td>{{ user.lastName|raw|upper }}</td>
+                            <td>{{ user.email|truncate(15) }}</td>
+                            <td>{% if user.isAdmin == 1%} Oui {% else %} Non {% endif %} </td>
+                            <td>{% if user.idPromo is not null  %}{{ user.name|date("m/Y") }} {% else %}
+                                    <img src="/assets/images/notvalidate.png" style="max-width:24px"> {% endif %}</td>
+                            <td>{% if user.idLanguage|length >= 1 %}{{ user.nameLanguage }} {% else %}
+                                    <img src="/assets/images/notvalidate.png" style="max-width:24px"> {% endif %}</td>
+                            <td>{% if user.birthdate > 1 %}{{ user.birthDate|date("d-m-Y") }} {% else %}
+                                    <img src="/assets/images/notvalidate.png" style="max-width:24px"> {% endif %}</td>
+                            <td>{% if user.phoneNumber|length > 1 %}{{ user.phoneNumber }}{% else %}
+                                    <img src="/assets/images/notvalidate.png" style="max-width:24px"> {% endif %}</td>
+                            <td>{% if user.GitHub|length > 18 %}<img src="/assets/images/validate.png">{% else %}
+                                    <img src="/assets/images/notvalidate.png" style="max-width:24px">{% endif %}</td>
+                            <td>{% if user.linkedin|length > 26 %}<img src="/assets/images/validate.png">{% else %}
+                                    <img src="/assets/images/notvalidate.png" style="max-width:24px">{% endif %}</td>
+                            <td>{% if user.odyssey|length > 32 %}<img src="/assets/images/validate.png">{% else %}
+                                    <img src="/assets/images/notvalidate.png" style="max-width:24px">{% endif %}</td>
+                            <td> {% if user.avatar != "/assets/images/logo.png" %} <img src="/assets/images/validate.png">
+                                {% else %} <img src="/assets/images/notvalidate.png" style="max-width:24px"> {% endif %}</td>
+                            <td><a href="/showProfile/{{ user.0 }}" class="btn btn-outline-secondary">Voir</a></td>
+                            <td><a href="/staff/user/modify{{ user.0 }}" class="btn modifyUser text-white">Modifier</a></td>
+                            <td><a href="/staff/user/delete{{ user.0 }}" class="btn deleteUser">Supprimer</a></td>
+                        </tr>
+                    {% else %}
+                        <li>Aucun utilisateur créé.</li>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $('#addUser').click(function() {
+            if($('#addUsers').css("display") == "none"){
+                $('#addUsers').css("display", "block");
+                $('#managePromos').css("display", "none");
+                $('#manageLanguages').css("display", "none");
+            }else{
+                $('#addUsers').css("display", "none");
+            }
+        });
+        $('#displayPromosManagement').click(function() {
+            if($('#managePromos').css("display") == "none") {
+                $('#managePromos').css("display", "block");
+                $('#manageLanguages').css("display", "none");
+                $('#addUsers').css("display", "none");
+            }else{
+                $('#managePromos').css("display", "none");
+            }
+        });
+        $('#displayLanguagesManagement').click(function() {
+            if($('#manageLanguages').css("display") == "none") {
+                $('#manageLanguages').css("display", "block");
+                $('#managePromos').css("display", "none");
+                $('#addUsers').css("display", "none");
+            }else{
+                $('#manageLanguages').css("display", "none");
+            }
+        });
+        let cpt = 1;
+        $('#addRows').change(function() {
+            if (cpt === 1) {
+
+                while (cpt < $('#addRows option:selected').attr('value')) {
+                    $('#1').clone().insertAfter($(".userRow:last"));
+                    cpt++;
+                    $('.userRow:last').prop('id', cpt)
+                    $('.userRow:last #firstname').prop('name', cpt + '[firstname]');
+                    $('.userRow:last #lastname').prop('name', cpt + '[lastname]');
+                    $('.userRow:last #email').prop('name', cpt + '[email]');
+                    $('.userRow:last #isAdmin').prop('name', cpt + '[isAdmin]');
+                }
+            } else {
+                $('.userRow').not($('#1')).remove();
+                cpt = 1;
+                while (cpt < $('#addRows option:selected').attr('value')) {
+                    $('#1').clone().insertAfter($(".userRow:last"));
+                    cpt++;
+                    $('.userRow:last').prop('id', cpt)
+                    $('.userRow:last #firstname').prop('name', cpt + '[firstname]');
+                    $('.userRow:last #lastname').prop('name', cpt + '[lastname]');
+                    $('.userRow:last #email').prop('name', cpt + '[email]');
+                    $('.userRow:last #isAdmin').prop('name', cpt + '[isAdmin]');
+                }
+            }
+        });
+
+        $(document).ready(function() {
+            if($('.usersInPromo').length>0){
+                $('#managePromos').css("display", "block");
+            }
+        });
+        $(document).ready(function() {
+            if($('.usersInLanguage').length>0){
+                $('#manageLanguages').css("display", "block");
+            }
+        });
+
+        $(window).resize(function() {
+            /*If browser resized, check width again */
+            if ($(window).width() < 1500) {
+                $('#adminTable').addClass('table-responsive');
+            }
+            else {$('#adminTable').removeClass('table-responsive');}
+        });
+    </script>
+{% endblock %}

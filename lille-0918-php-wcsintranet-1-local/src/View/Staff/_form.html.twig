@@ -1,0 +1,77 @@
+<form method="post" enctype="multipart/form-data">
+    <div class="form-group row">
+        <input type="hidden" value="{{ user.id }}" name="id">
+        <label for="firstName" class="col-md-4 col-xs-12 col-form-label">Prénom*</label>
+        <div class="col-xs-12 col-md-8">
+            <input type="text" value="{{ user.firstName }}" name="firstName" id="firstName" class="form-control here">
+            <p class="comments">{{ errors['firstName'] }}</p>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="lastName" class="col-xs-12 col-md-4 col-form-label">Nom*</label>
+        <div class="col-xs-12 col-md-8">
+            <input type="text" value="{{ user.lastName }}" name="lastName" id="lastName" class="form-control here">
+            <p>{{ errors['lastName'] }}</p>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="email" class="col-xs-12 col-md-4 col-form-label">Email*</label>
+        <div class="col-xs-12 col-md-8">
+            <input type="email" value="{{ user.email }}" name="email" id="email" class="form-control here">
+            <p>{{ errors['email'] }}</p>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="date" class="col-xs-12 col-md-4 col-form-label">Date de naissance</label>
+        <div class="col-xs-12 col-md-8">
+            <input type="date" value="{{ user.birthDate }}" name="date" id="date" class="form-control here">
+            <p>{{ errors['birthDate'] }}</p>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="phoneNumber" class="col-xs-12 col-md-4 col-form-label">Téléphone</label>
+        <div class="col-xs-12 col-md-8">
+            <input type="text" value="{{ user.phoneNumber }}" name="phoneNumber" id="phoneNumber" class="form-control here">
+            <p>{{ errors['phoneNumber'] }}</p>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="github" class="col-xs-12 col-md-4 col-form-label">Github</label>
+        <div class="col-xs-12 col-md-8">
+            <input type="text" value="{{ user.gitHub }}" name="gitHub" id="github" class="form-control here">
+            <p>{{ errors['gitHub'] }}</p>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="linkedin" class="col-xs-12 col-md-4 col-form-label">LinkedIn</label>
+        <div class="col-xs-12 col-md-8">
+            <input type="text" value="{{ user.linkedin }}" name="linkedin" id="linkedin" class="form-control here">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="odyssey" class="col-xs-12 col-md-4 col-form-label">Odyssey</label>
+        <div class="col-xs-12 col-md-8">
+            <input type="text" value="{{ user.odyssey }}" name="odyssey" id="odyssey" class="form-control here">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="isAdmin" class="col-xs-12 col-md-4 col-form-label">Administrateur</label>
+        <div class="col-xs-12 col-md-8">
+            <select class="custom-select" id="isAdmin" name="isAdmin">
+                <option selected value="{% if user.isAdmin == 1 %}1{% else %}0{% endif %}"> {% if user.isAdmin == 1 %} Oui {% else %} Non {% endif %}</option>
+                <option value="{% if user.isAdmin == 1 %}0{% else %}1{% endif %}"> {% if user.isAdmin == 1 %} Non {% else %} Oui {% endif %}</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="offset-4 col-xs-12 col-md-8">
+            <input type="file" name="fichier"/>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="offset-4 col-xs-12 col-md-8">
+            <button type="submit" class="btn modifyUser text-white adminButton">Editer le profil</button>
+        </div>
+    </div>
+    <small class="form-text text-muted">Les champs marqués d'un * sont obligatoires.</small>
+</form>

@@ -1,0 +1,126 @@
+{# src/View/layout.html.twig #}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <!-- Meta -->
+    <meta charset="UTF-8">
+    <!-- maximum-scale=1.0 is now deprecated -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Florian Radureau">
+    <meta name="author" content="Julie Delmas">
+    <meta name="author" content="Christophe Kuchmac">
+    <meta name="author" content="Sami Aid">
+    <meta name="description" content="Intranet for the people of Wild Code School">
+    <meta name="keywords" content="IntraWild, article, utilisateurs, trombinoscope">
+    <!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><![endif]-->
+
+    <title>WCS - {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    {% block stylesheet %}{% endblock %}
+    <link rel="icon" href="/assets/images/favicon.png">
+</head>
+<body>
+
+{% block header %}
+    {% set route = app.request.get('_internal') %}
+    <nav class="md-block sidebar">
+        <div class="sidebar-sticky">
+            <a class="navbar-brand" href="/">
+                <img src="/assets/images/logo.png">
+                <span>Intrawild</span>
+            </a>
+            <hr>
+            <ul class="nav flex-column" id="navBarre">
+                <li class="nav-item {% if current==1 %}active{% endif %}">
+                    <a class="nav-link" href="/">
+                        <img src="/assets/images/home.png">
+                        <span>Accueil</span>
+                    </a>
+                </li>
+                <li class="nav-item {% if current==2 %}active{% endif %}">
+                    <a class="nav-link" href="/profile">
+                        <img src="/assets/images/profile.png">
+                        <span>Profil</span>
+                    </a>
+                </li>
+                <li class="nav-item {% if current==3 %}active{% endif %}">
+                    <a class="nav-link" href="/articles">
+                        <img src="/assets/images/articles.png">
+                        <span>Articles</span>
+                    </a>
+                </li>
+                <li class="nav-item {% if current==4 %}active{% endif %}">
+                    <a class="nav-link" href="/trombinoscope">
+                        <img src="/assets/images/trombinoscope.png">
+                        <span>Trombinoscope</span>
+                    </a>
+                </li>
+                <hr>
+                {% if session.user.isAdmin == 1 %}
+                    <li class="nav-item {% if current==5 %}active{% endif %}" id="staff-item-user">
+                        <a class="nav-link" href="/staff/user">
+                            <img src="/assets/images/adminProfile.png">
+                            <span>Utilisateurs</span>
+                        </a>
+                    </li>
+                    <li class="nav-item {% if current==6 %}active{% endif %}" id="staff-item-article">
+                        <a class="nav-link" href="/article/view">
+                            <img src="/assets/images/adminArticles.png">
+                            <span>Articles</span>
+                        </a>
+                    </li>
+                {% endif %}
+                <hr>
+                <li class="nav-item">
+                    <a class="nav-link" href="/disconnect">
+                        <img src="/assets/images/disconnect.png">
+                        <span>Déconnexion</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block body %}
+    <div id="body">
+        {% block content %}
+        {% endblock %}
+    </div>
+{% endblock %}
+
+
+{% block footer %}
+    <footer>
+        <div class="container-fluid">
+            <ul class="mt-5">
+                <li>
+                    <p>Made with <span class='heart'>❤</span> by
+                        <a id="footerLink" target="_blank" href="https://www.wildcodeschool.fr">Wild Code School</a>
+                    </p>
+                </li>
+                <li>
+                    <small><a href="/mentions-legales">CGU</a></small>
+                </li>
+            </ul>
+        </div>
+    </footer>
+{% endblock %}
+
+<script src="/assets/JS/jquery-3.3.1.min.js"></script>
+<script src="/assets/JS/popper.min.js"></script>
+<script src="/assets/bootstrap/js/bootstrap.js/bootstrap.min.js"></script>
+<script src="/assets/JS/navbar.js"></script>
+<script>
+    $('.sidebar').hover(function(){
+        $(body).css("padding-left", "10.5rem");
+    }, function(){
+        $(body).css("padding-left", "2.7rem");
+    });
+</script>
+{% block javascripts %}
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,80 @@
+{% extends 'layout.html.twig' %}
+{% block title %} {{ article.subject }} {% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="enteteArticle title text-white">
+                <h1>Article</h1>
+                <h2 class="pt-2">{{ article.subject }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card mt-5">
+            <div class="card-header">
+                <div class="row">
+                    <h5 class="col-10 card-title">{{ article.subject | upper }}</h5>
+                    {% if session.user.isAdmin == 1 %}
+                        <a href="#" class="btn deleteArticle" data-toggle="modal" data-target="#delete">Supprimer</a>
+                    {% endif %}
+                    {% include 'Article/_modal.html.twig' %}
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <h6 class="card-text col-lg-9 col-md-12"><em>le {{article.date|date("d/m/Y")}}</em></h6>
+                    <p class="card-text col-lg-3 col-md-12"><em>Catégorie : {{ article.name }}</em></p>
+                </div>
+                <div class="row mt-4 m-1">
+                    <p class="card-text text-justify">{{ article.content|raw }}</p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="comment mt-5">
+            <section id ="comments">
+                <h2>Commentaires</h2>
+                {% include 'Article/_formComment.html.twig' %}
+                <div class="mt-5">
+                    {% if _get.errno == 1%}
+                        <p>Erreur dans la suppression du commentaire.</p>
+                    {% elseif _get.errno == 2 %}
+                        <p>Tu ne peux pas supprimer ce commentaire.</p>
+                    {% endif %}
+                </div>
+                {% for comment in comments %}
+                    <div class="card mt-4">
+                        <div class="card-header">
+                            <div class="row">
+                                <p class="col">{{ comment.date|date("d/m/Y") }} - {{ comment.firstName|capitalize ~ ' ' ~comment.lastName|capitalize }}</p>
+                                <a href="/comments/delete/{{ comment.id }}" class="btn deleteArticle">Supprimer</a>
+                            </div>
+                        </div>
+                        <div class="card-body row">
+                            <p class="card-text">{{ comment.content | raw }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </section>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="/assets/JS/tinymce/tinymce.js"></script>
+    <script type="text/javascript">
+        tinyMCE.init({
+            selector: '#content',
+            height: 100,
+            mode : "textareas",
+            statusbar: false,
+            menubar: false
+        });
+    </script>
+{% endblock %}

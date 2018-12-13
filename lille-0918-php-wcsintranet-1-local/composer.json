@@ -1,0 +1,42 @@
+{
+    "name": "aurel/simple-mvc",
+    "description": "Simple from scratch PHP MVC",
+    "authors": [
+        {
+            "name": "Florian Radureau",
+            "email": "fradureau@gmail.com"
+        },
+        {
+            "name": "Julie Delmas",
+            "email": "julie.delmas33@gmail.com"
+        },
+        {
+            "name": "Christophe Kuchmac",
+            "email": "kuchkz@gmail.com"
+        },
+        {
+            "name": "Sami Aid",
+            "email": "samiaid2@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php" : ">=7.1",
+        "ext-pdo" : "*",
+        "nikic/fast-route": "^1.2",
+        "twig/twig": "^2.4",
+        "swiftmailer/swiftmailer": "^6.1",
+        "twig/extensions": "^1.5",
+        "jasny/dbquery-mysql": "^2.0",
+        "ext-SimpleXML": "*"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "": "src/",
+            "App\\": "app/"
+        }
+    }
+}

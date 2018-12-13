@@ -1,0 +1,87 @@
+{% extends 'layout.html.twig' %}
+{% block title %}Accueil{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        {% include '_header.html.twig' %}
+        <div class="row">
+            <div class="enteteHome title text-white">
+                <h1> <strong>Bienvenue sur l'intranet de la Wild Code School</strong></h1>
+                <h2 class="font-weight-bold pt-2">Vous trouverez sur l’intranet des informations sur la Wild et sur son fonctionnement!</h2>
+            </div>
+        </div>
+
+        <div class="mt-5">
+            <div class="row">
+                <div class="col-xs-12 col-lg-6">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card-header text-center text-white" id="news">
+                            <h4><strong>Derniers articles publiés</strong></h4>
+                            </div>
+                            {% for article in articles if article.isActif == 1 and article.activeCategory == 0%}
+                            <ul class="timeline" >
+                                <li>
+                                    <a target="_blank" href="/articles/{{ article.id }}" >{{ article.subject }}</a>
+                                    <i> {{ article.name|raw }}</i>
+                                    <p class="float-right small">rédigé par : {{ article.author }}</p>
+                                    <p>{{ article.content| truncate(100, true, '...')| raw }}</p>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+
+                    {% if session.user.isAdmin == 1 %}
+                        <div class="row mt-5">
+                            <div class="col">
+                                <div class="card-header text-center text-white" id="news">
+                                <h4><strong>Articles soumis à validation</strong></h4>
+                                </div>
+                                {% for article in articles if article.isActif != 1 %}
+                                    <ul class="timeline" >
+                                        <li>
+                                            <a href="/article/view" >{{ article.subject }}</a>
+                                            <i> {{ article.name|raw }}</i>
+                                            <p class="float-right small">rédigé par : {{ article.author }}</p>
+                                        </li>
+                                    </ul>
+                                {% else %}
+                                    <div class="alert alert-success mt-5" role="alert">
+                                        <h4 class="alert-heading ml-5">Bien joué!</h4>
+                                        <p class="ml-5">Il n'y a plus aucun article à valider pour l'instant, merci!</p>
+                                        <hr>
+                                        <p class="mb-0 ml-5">Vous pouvez consulter les articles publiés <a href="/articles" class="alert-link">ici</a>.</p>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="col-xs-12 col-lg-5 offset-lg-1">
+                    <div>
+                        <div class="card">
+                            <div class="card-header text-center text-white" id="news">
+                                <h4 class="text-white"> <a href="https://thehackernews.com/" target="_blank" class="text-white">Hacker News</a></h4>
+                                <i>(des idées pour la veille !)</i>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                {% for key, new in news if key<5 %}
+                                    <li class="list-group-item">
+                                        <a class="text-dark green" href="{{ new.link }}" target="_blank"><strong class="green">{{ new.title }}</strong></a>
+                                        <p>{{ new.description | raw | truncate(150, true, '...') }}</p>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+    {% block javascripts %}
+        <script type="text/javascript" src="http://widget.meteocity.com/js/NTkzNTB8MXw0fDF8NXwyMWIyYTN8MXxGRkZGRkZ8Y3wx"></script>
+    {% endblock %}

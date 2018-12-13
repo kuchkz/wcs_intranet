@@ -1,0 +1,65 @@
+{% extends 'layout.html.twig'%}
+{% block title %}Articles{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="enteteArticle title text-white">
+                <h1>Articles</h1>
+                <h2 class="pt-2">Retrouve tous les articles de la Wild Code School</h2>
+                <a class="btn btn-lg orange text-white mt-4" href="/article/create">Créer un article</a>
+            </div>
+        </div>
+    </div>
+
+    <section id="search" class="mt-5">
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <form method="post">
+                    <div class="input-group">
+                        <select class="custom-select" id="id_category" name="id_category">
+                            <option value="all">Tous</option>
+                            {% for category in categories if category.isActive == 0 %}
+                                <option value="{{ category.id }}" {% if articles|first.idCategory == articles|last.idCategory and articles|first.idCategory == category.id %}selected {% endif %}>{{ category.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <div>
+                            <input type="submit" class="btn orange text-white" value="Rechercher">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section class="mt-5">
+        <div class="container">
+            <div class="article">
+                <div class="row">
+                    {% for article in articles if article.isActif == 1 and article.activeCategory == 0 %}
+                        <div class="col-lg-4 col-md-12">
+                            <div class="card mt-4">
+                                <div class="ribbon">
+                                    <span>{{ article.name }}</span>
+                                </div>
+                                <div class="card-header">
+                                    {{ article.subject| upper |raw |truncate(20, true, '...') }}
+                                </div>
+                                <div class="card-body">
+                                    <p>Par <em>{{ article.author | title }}</em></p>
+                                    <p class="card-text text-justify">{{ article.content|truncate(200, true, '...')|raw }}</p>
+                                    <a href="/articles/{{ article.id }}" class="btn orange text-white">Lire la suite</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <p>Il n'y a pas d'articles dans cette catégorie.</p>
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+{% endblock %}
+

@@ -1,0 +1,18 @@
+{% extends 'layout.html.twig' %}
+{% block title %}Editer votre profil{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        {% include '_header.html.twig' %}
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col mt-2 mb-5">
+                {% include 'User/_formProfile.html.twig' %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript" src="http://widget.meteocity.com/js/NTkzNTB8MXw0fDF8NXwyMWIyYTN8MXxGRkZGRkZ8Y3wx"></script>
+{% endblock %}
